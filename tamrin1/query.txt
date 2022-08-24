@@ -1,0 +1,243 @@
+
+CREATE DATABASE shopingStore;
+
+use shopingStore;
+
+--------------------------
+
+ CREATE TABLE branch
+ (
+ id int NOT NULL AUTO_INCREMENT,
+ name varchar(75) NOT NULL,
+ city varchar(100) not null,
+ create_date datetime,
+ PRIMARY KEY(id)
+ );
+
+-------------------------------
+
+CREATE TABLE office
+ (
+ id int NOT NULL AUTO_INCREMENT,
+ branch_id int NOT null,
+ name varchar(75) NOT NULL,
+ rule  text NOT NULL,
+ PRIMARY KEY(id), 
+   
+ FOREIGN KEY( branch_id) REFERENCES branch(id)  
+ );
+
+-----------------------------------
+
+ CREATE TABLE employee
+ (
+  id int NOT NULL AUTO_INCREMENT,
+ office_id int NOT null,
+ name varchar(75) NOT NULL,
+ age  int NOT NULL,
+ salary float NOT NULL,
+ PRIMARY KEY(id), 
+   
+ FOREIGN KEY( office_id) REFERENCES office(id)  
+   
+ );
+----------------------------------
+insert into branch(name ,city, create_date  )
+values('A','babol','1400/1/1'),
+('B','savadkouh','1399/1/1'),
+('C','tehran','1401/12/1'),
+('D','karaj','1400/7/7'),
+('E','yazd','1401/7/27');
+
+insert into branch(name ,city, create_date  )
+values('H','esfahan','1399/5/2'),
+('W','esfahan','1400/12/14');
+
+----------------------------------------
+
+insert into office(branch_id ,name, rule  )
+values('5','fruits','sell fruits '),
+('4','car','sell car '),
+('2','book','sell book'),
+('2','wood','sell wood'),
+('3','car','sell car');
+
+
+insert into office(branch_id ,name, rule  )
+values('7','fruits','sell fruits '),
+('7','car','sell car '),
+('8','book','sell book');
+---------------------------------------
+
+insert into employee(office_id ,name, age ,salary  )
+values(1,'mohammad',37,37000),
+(2,'ali', 20, 17000 ),
+(3,'jafer', 22,22000),
+(4,'ramin',30,25000 ),
+(5,'hadid',27,70000 );
+
+
+ 
+insert into employee(office_id ,name, age ,salary  )
+values(1,'mohammad ali ',37,100),
+(2,'ali baba', 20, 300 ),
+(3,'jafer ali ', 22,200),
+(4,'ramin ali',30,700 ),
+(5,'hadi ',27,550 );
+
+
+
+ insert into employee(office_id ,name, age ,salary  )
+values(7,'mina',29,7000),
+(7,'alireza', 24, 700 ),
+(8,'saeed', 28,777),
+(8,'hoda', 32,2000);
+
+----------------------------------------
+1-1:
+SELECT name 
+from employee
+WHERE salary < 1000;
+
+--------------------------------
+
+1-2:
+ SELECT employee.name ,  office.name 
+from employee  
+left join office
+on  employee.office_id= office.id
+order by  employee.name ;
+
+-----------------------------------
+
+1-3:
+
+SELECT office.name, avg(employee.salary)  
+from office  
+left join employee
+on  employee.office_id= office.id
+group by  office.name 
+order by  office.name ;
+
+------------------------------------
+
+1-4: 
+SELECT office.name   
+from branch  
+inner join office
+on  branch.id= office.branch_id
+WHERE branch.city='esfahan';
+
+----------------------------------------
+
+1-5:
+SELECT branch.name, count(*)  
+from branch  
+inner join office
+on  branch.id= office.branch_id
+group by  office.name 
+order by  office.name ;
+
+
+---------------------------
+1-6:
+
+SELECT employee.name , branch.name
+from employee  
+left join office
+on  employee.office_id = office.id
+left join branch
+on  branch.id= office.branch_id
+order by  office.name ;
+
+
+--------------------------
+
+1-7:  
+SELECT branch.city , avg(employee.salary)  
+from employee  
+inner join office
+on   office.id = employee.office_id
+inner join branch
+on  branch.id= office.branch_id
+WHERE branch.city='esfahan'
+ group by branch.city;
+
+---------------------------------
+
+1-8:
+SELECT branch.name as branch_name, count(*) as employee_count  
+from employee  
+inner join office
+on   office.id = employee.office_id
+inner join branch
+on  branch.id= office.branch_id
+ 
+ group by branch.name;
+
+
+-----------------------------
+
+1-9:
+
+SELECT office.name as branch_name, count(*) as employee_count  
+from employee  
+left join office
+on   office.id = employee.office_id
+left join branch
+on  branch.id= office.branch_id
+WHERE branch.city='esfahan' 
+ group by office.name;
+--------------------------------------
+
+1-10:
+
+SELECT office.name as branch_name, count(*) as employee_count  
+from employee  
+inner join office
+on   office.id = employee.office_id
+inner join branch
+on  branch.id= office.branch_id
+ 
+group by branch.name
+ 
+HAVING COUNT(*)<10;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+----------------------------------------
+
+
+
+
+
+
